@@ -1,0 +1,11 @@
+doctype html
+head(lang="eng")
+	title #{title}
+	link(href="./index.css" rel="stylesheet")
+body
+	for dir in dirs
+		a.dir(href=dir) #{dir}
+	for image in images
+		img(src=image)
+		
+	
