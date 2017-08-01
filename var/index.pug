@@ -3,9 +3,13 @@ head(lang="eng")
 	title #{title}
 	link(href="./index.css" rel="stylesheet")
 body
-	for dir in dirs
-		a.dir(href=dir) #{dir}
-	for image in images
-		img(src=image)
-		
-	
+	.folder-container
+		for dir in dirs
+			a.dir(href=dir)
+				img.folder-icon(src="folder-icon.png")
+				- let dirname = dir.split('/');
+				- dirname = dirname[dirname.length - 1];
+				div.folder-label #{dirname}
+	.image-container
+		for image in images
+			img.image(src=image)

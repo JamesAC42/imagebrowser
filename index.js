@@ -21,9 +21,13 @@ function respond(req, res){
 					if(err) throw err;
 					var images = files.filter(file => {
 						return path.extname(file) == ".jpg" || path.extname(file) == ".png";
+					}).map(image => {
+						return req.url + '/' + image;
 					});
 					var dirs = files.filter(file => {
 						return fs.lstatSync(p + '/' + file).isDirectory();
+					}).map(dir => {
+						return req.url + '/' + dir;
 					});
 					var data = {
 						'title':req.url,
@@ -40,8 +44,13 @@ function respond(req, res){
 					res.end(data, 'binary');
 				});
 			}else{
-				res.writeHead(200, {"Content-Type":"text/plain"});
-				res.end("invalid");
+				if(ext == '.css'){
+					res.writeHead(200, {"Content-Type":"text/css"});
+					fs.readFile(p, function(err, data){
+						if(err) throw err;
+						res.end(data);
+					});
+				}
 			}
 		}else{
 			res.writeHead(200, {"Content-Type":"text/html"});
