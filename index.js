@@ -11,7 +11,6 @@ var server = http.createServer(function(req, res){
 });
 
 function respond(req, res){
-	console.log(req.url);
 	var p = __dirname + req.url;
 	var ext = path.extname(p);
 	fs.exists(p, function(exists){
@@ -25,9 +24,9 @@ function respond(req, res){
 						return req.url + '/' + image;
 					});
 					var dirs = files.filter(file => {
-						return fs.lstatSync(p + '/' + file).isDirectory();
+						return fs.lstatSync(p + '/' + file).isDirectory() && file != "node_modules";
 					}).map(dir => {
-						return req.url + '/' + dir;
+						return './' + dir;
 					});
 					var data = {
 						'title':req.url,
@@ -63,4 +62,4 @@ function respond(req, res){
 }
 
 server.listen(3434);
-console.log("Listening on 3434");
+console.log("Listening on 3434...");
