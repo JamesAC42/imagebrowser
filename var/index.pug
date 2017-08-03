@@ -13,6 +13,7 @@ body
 					div.folder-label #{dirname}
 		else
 			for image in images
-				img.image(src=image)
+				a(href=image)
+					img.image(src=image, target="_blank")
 	if title != '/'
 		a.back-btn(href="./") &#x2302;

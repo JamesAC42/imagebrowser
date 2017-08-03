@@ -4,6 +4,8 @@ var path = require('path');
 var pug = require('pug');
 var url = require('url');
 
+var valid_types = ['.jpg', '.png', '.gif'];
+
 var server = http.createServer(function(req, res){
 	if(req.method.toLowerCase() == "get"){
 		respond(req, res);
@@ -19,7 +21,7 @@ function respond(req, res){
 				fs.readdir(p, function(err, files){
 					if(err) throw err;
 					var images = files.filter(file => {
-						return path.extname(file) == ".jpg" || path.extname(file) == ".png";
+						return valid_types.indexOf(path.extname(file)) != -1;
 					}).map(image => {
 						return req.url + '/' + image;
 					});
@@ -37,9 +39,24 @@ function respond(req, res){
 					res.writeHead(200, {"Content-Type":"text/html"});
 					res.end(render);
 				});
-			}else if(ext == ".jpg" || ext == ".png"){
+			}else if(ext == ".jpg" || ext == ".png" || ext == ".gif"){
+				let contentType = "";
+				switch(ext){
+					case ".jpg":
+						contentType = "image/jpg";
+						break;
+					case ".png":
+						contentType = "image/png";
+						break;
+					case ".gif":
+						contentType = "image/gif";
+						break;
+					default:
+						contentType = "text/plain";
+						break
+				}
 				fs.readFile(p, function(err, data){
-					res.writeHead(200, {"Content-type":"image/jpg"});
+					res.writeHead(200, {"Content-type":contentType});
 					res.end(data, 'binary');
 				});
 			}else{
@@ -61,5 +78,5 @@ function respond(req, res){
 	});
 }
 
-server.listen(3434);
+server.listen(3434, "0.0.0.0");
 console.log("Listening on 3434...");
