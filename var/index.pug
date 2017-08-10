@@ -14,6 +14,10 @@ body
 		else
 			for image in images
 				a(href=image)
-					img.image(src=image, target="_blank")
+					if image.split('.')[1] == "webm"
+						video.media.video(controls autoplay loop muted preload="metadata")
+							source(id="video-src" src=image type="video/webm")
+					else
+						img.media.image(src=image, target="_blank")
 	if title != '/'
 		a.back-btn(href="./") &#x2302;

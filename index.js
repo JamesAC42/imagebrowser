@@ -4,7 +4,7 @@ var path = require('path');
 var pug = require('pug');
 var url = require('url');
 
-var valid_types = ['.jpg', '.png', '.gif'];
+var valid_types = ['.jpg', '.png', '.gif', '.webm'];
 
 var server = http.createServer(function(req, res){
 	if(req.method.toLowerCase() == "get"){
@@ -39,21 +39,12 @@ function respond(req, res){
 					res.writeHead(200, {"Content-Type":"text/html"});
 					res.end(render);
 				});
-			}else if(ext == ".jpg" || ext == ".png" || ext == ".gif"){
-				let contentType = "";
-				switch(ext){
-					case ".jpg":
-						contentType = "image/jpg";
-						break;
-					case ".png":
-						contentType = "image/png";
-						break;
-					case ".gif":
-						contentType = "image/gif";
-						break;
-					default:
-						contentType = "text/plain";
-						break
+			}else if(valid_types.indexOf(ext) != -1){
+				let contentType;
+				if(ext == '.webm'){
+					contentType = "video/webm";
+				}else{
+					contentType = "image/" + ext.substring(1,4);
 				}
 				fs.readFile(p, function(err, data){
 					res.writeHead(200, {"Content-type":contentType});

@@ -38,10 +38,17 @@ body{
 	font-family:sans-serif;
 }
 
-.image{
+.media{
 	margin:20px;
 	float:left;
-	max-width:250px;
+}
+
+.image{
+	max-width:350px;
+}
+
+.video{
+	max-width:720px;
 }
 
 .back-btn{
